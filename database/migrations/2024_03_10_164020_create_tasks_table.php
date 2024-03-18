@@ -14,11 +14,11 @@ return new class extends Migration {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string("title")->nullable(false);
-            $table->string("description");
+            $table->tinyText("description");
             $table->enum("status", [
                 EntityStatus::ACTIVE->value,
-                EntityStatus::FINISH->value,
-                EntityStatus::PAUSE->value
+                EntityStatus::PAUSE->value,
+                EntityStatus::FINISH->value
             ])->default(EntityStatus::ACTIVE);
             $table->timestamps();
         });
