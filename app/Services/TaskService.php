@@ -7,7 +7,7 @@ use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Models\EntityStatus;
 use App\Models\Task;
-use App\Repositories\TaskRepository;
+use App\Repositories\interfaces\TaskRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class TaskService

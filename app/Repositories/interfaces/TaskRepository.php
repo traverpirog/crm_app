@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\interfaces;
 
 use App\Models\Task;
 use Illuminate\Pagination\LengthAwarePaginator;
