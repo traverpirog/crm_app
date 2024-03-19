@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\IndexTaskRequest;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
-use App\Http\Resources\TaskResource;
+use App\Http\Resources\Task\IndexTaskResource;
+use App\Http\Resources\Task\TaskResource;
 use App\Services\Interfaces\TaskService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -18,7 +19,7 @@ class TaskController extends Controller
      */
     public function index(IndexTaskRequest $request, TaskService $service): AnonymousResourceCollection
     {
-        return TaskResource::collection($service->index($request));
+        return IndexTaskResource::collection($service->index($request));
     }
 
     /**

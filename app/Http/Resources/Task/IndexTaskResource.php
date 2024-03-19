@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Task;
 
 use App\Models\EntityStatus;
 use Date;
@@ -16,7 +16,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property array $files
  * @property array $comments
  */
-class TaskResource extends JsonResource
+class IndexTaskResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -30,8 +30,6 @@ class TaskResource extends JsonResource
             "title" => $this->title,
             "description" => $this->description,
             "status" => $this->status,
-            "files" => FileResource::collection($this->files),
-            "comments" => $this->comments,
             "created_at" => $this->created_at
         ];
     }

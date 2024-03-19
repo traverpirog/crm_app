@@ -2,7 +2,6 @@
 
 namespace App\Services\Interfaces;
 
-use App\Http\Requests\File\StoreFileRequest;
 use App\Http\Requests\Task\IndexTaskRequest;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
@@ -15,7 +14,7 @@ interface TaskService
 
     public function show(int $id): ?Task;
 
-    public function store(StoreTaskRequest $taskRequest, StoreFileRequest $fileRequest): Task;
+    public function store(StoreTaskRequest $taskRequest): Task;
 
     public function update(UpdateTaskRequest $request, int $id): Task;
 

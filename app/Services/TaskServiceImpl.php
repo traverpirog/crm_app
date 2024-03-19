@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Http\Requests\File\StoreFileRequest;
 use App\Http\Requests\Task\IndexTaskRequest;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
@@ -28,7 +27,7 @@ class TaskServiceImpl implements TaskService
         return $this->repository->index($data['limit']);
     }
 
-    public function store(StoreTaskRequest $taskRequest, StoreFileRequest $fileRequest): Task
+    public function store(StoreTaskRequest $taskRequest): Task
     {
         $taskData = $taskRequest->validated();
         $taskData['status'] = $taskData['status'] ?? EntityStatus::ACTIVE;

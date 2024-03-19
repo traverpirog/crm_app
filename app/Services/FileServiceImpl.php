@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Http\Middleware\ImageUploader;
 use App\Http\Requests\File\StoreFileRequest;
 use App\Repositories\Interfaces\FileRepository;
 use App\Services\Interfaces\FileService;
+use App\Utils\ImageUploader;
 
 class FileServiceImpl implements FileService
 {
