@@ -30,7 +30,7 @@ class TaskResource extends JsonResource
             "title" => $this->title,
             "description" => $this->description,
             "status" => $this->status,
-            "files" => $this->files,
+            "files" => FileResource::collection($this->files),
             "comments" => $this->comments,
             "created_at" => $this->created_at
         ];

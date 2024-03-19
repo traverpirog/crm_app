@@ -2,15 +2,17 @@
 
 namespace App\Services;
 
+use App\Http\Requests\File\StoreFileRequest;
 use App\Http\Requests\Task\IndexTaskRequest;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Models\EntityStatus;
 use App\Models\Task;
-use App\Repositories\interfaces\TaskRepository;
+use App\Repositories\Interfaces\TaskRepository;
+use App\Services\Interfaces\TaskService;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class TaskService
+class TaskServiceImpl implements TaskService
 {
     private TaskRepository $repository;
 
@@ -26,11 +28,11 @@ class TaskService
         return $this->repository->index($data['limit']);
     }
 
-    public function store(StoreTaskRequest $request): Task
+    public function store(StoreTaskRequest $taskRequest, StoreFileRequest $fileRequest): Task
     {
-        $data = $request->validated();
-        $data['status'] = $task['status'] ?? EntityStatus::ACTIVE;
-        return $this->repository->store($data);
+        $taskData = $taskRequest->validated();
+        $taskData['status'] = $taskData['status'] ?? EntityStatus::ACTIVE;
+        return $this->repository->store($taskData);
     }
 
     public function show(int $id): ?Task

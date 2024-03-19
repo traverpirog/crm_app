@@ -7,7 +7,8 @@ use App\Http\Requests\Task\IndexTaskRequest;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
-use App\Services\TaskService;
+use App\Services\Interfaces\TaskService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TaskController extends Controller
@@ -15,7 +16,7 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexTaskRequest $request,TaskService $service): AnonymousResourceCollection
+    public function index(IndexTaskRequest $request, TaskService $service): AnonymousResourceCollection
     {
         return TaskResource::collection($service->index($request));
     }
@@ -47,8 +48,8 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id, TaskService $service): array
+    public function destroy(int $id, TaskService $service): JsonResponse
     {
-        return $service->destroy($id);
+        return response()->json($service->destroy($id));
     }
 }
