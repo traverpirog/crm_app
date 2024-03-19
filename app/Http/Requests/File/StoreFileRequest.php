@@ -3,6 +3,7 @@
 namespace App\Http\Requests\File;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 
 class StoreFileRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreFileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,11 @@ class StoreFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "attachment.*" => [
+                "required",
+                File::types(["jpg", "jpeg", "png"])
+                    ->max(12 * 1024)
+            ]
         ];
     }
 }
