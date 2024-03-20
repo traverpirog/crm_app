@@ -4,19 +4,26 @@ namespace App\Utils;
 
 use Illuminate\Support\Facades\Storage;
 
-class ImageUploader
+class ImageUtil
 {
     public static function upload(array $data, string $entityName = "uploads", $id = ''): array
     {
+        $path = "$entityName/$id";
+        $storagePath = "/storage/$path";
         $files = $data['attachment'];
         $loadedFiles = [];
         foreach ($files as $file) {
-            $loadedPath = Storage::putFile("/public/$entityName/$id", $file);
+            $loadedPath = Storage::putFile("/public/$path", $file);
             $loadedFiles[] = [
-                "path" => $loadedPath,
+                "path" => $path . "/" . basename($loadedPath),
                 "type" => $file->getMimeType()
             ];
         }
         return $loadedFiles;
+    }
+
+    public static function delete(string $path): bool
+    {
+        return Storage::delete("/public/" . $path);
     }
 }
