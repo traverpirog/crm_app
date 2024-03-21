@@ -26,7 +26,19 @@ class StoreTaskRequest extends FormRequest
         return [
             "title" => "required|string",
             "description" => "nullable|string",
+            "project_id" => "int|required",
             "status" => [Rule::enum(EntityStatus::class)]
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            "status" => "The status must be [" .
+                EntityStatus::ACTIVE->value . ", " .
+                EntityStatus::PAUSE->value . ", " .
+                EntityStatus::FINISH->value .
+                "]"
         ];
     }
 }

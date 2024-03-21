@@ -18,7 +18,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property array $comments
  * @property Project $project
  */
-class IndexTaskResource extends JsonResource
+class ProjectTaskResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -31,7 +31,6 @@ class IndexTaskResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "status" => $this->status,
-            "project" => $this->project,
             "created_at" => $this->created_at
         ];
     }

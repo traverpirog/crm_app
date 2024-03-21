@@ -23,8 +23,9 @@ class TaskRepositoryImpl implements TaskRepository
         return Task::with('files')->findOrFail($id);
     }
 
-    public function update(Task $founded, array $data): Task
+    public function update(int $id, array $data): Task
     {
+        $founded = Task::findOrFail($id);
         $founded->update($data);
         return $founded;
     }

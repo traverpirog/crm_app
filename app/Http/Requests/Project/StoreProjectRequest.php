@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Task;
+namespace App\Http\Requests\Project;
 
+use App\Models\EntityStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class IndexTaskRequest extends FormRequest
+class StoreProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +24,19 @@ class IndexTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "limit" => [
-                "integer",
-                Rule::in([8, 16, 24])
-            ]
+            "name" => "string|required",
+            "description" => "string",
+            "status" => [Rule::enum(EntityStatus::class)]
         ];
     }
 
     public function messages(): array
     {
         return [
-            "limit" => "limit must be in [8, 16, 24]"
+            "status" => "The status must be [" .
+                EntityStatus::ACTIVE->value . ", " .
+                EntityStatus::FINISH->value .
+                "]"
         ];
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\ProjectController;
 use App\Http\Controllers\api\TaskController;
 use App\Http\Controllers\api\TaskFileController;
 use Illuminate\Http\Request;
@@ -22,3 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource("tasks", TaskController::class);
 Route::resource("tasks.files", TaskFileController::class);
+Route::resource("projects", ProjectController::class);

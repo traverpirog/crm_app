@@ -1,24 +1,21 @@
 <?php
 
-namespace App\Http\Resources\Task;
+namespace App\Http\Resources\Project;
 
 use App\Models\EntityStatus;
-use App\Models\Project;
+use App\Models\Task;
 use Date;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @property int $id
- * @property string $title
+ * @property string $name
  * @property string $description
  * @property EntityStatus $status
  * @property Date $created_at
- * @property array $files
- * @property array $comments
- * @property Project $project
  */
-class IndexTaskResource extends JsonResource
+class IndexProjectResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -29,9 +26,10 @@ class IndexTaskResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "title" => $this->title,
+            "name" => $this->name,
+            "description" => $this->description,
             "status" => $this->status,
-            "project" => $this->project,
+            "active_tasks" => Task::where("project_id", $this->id)->where("status", EntityStatus::ACTIVE)->count(),
             "created_at" => $this->created_at
         ];
     }

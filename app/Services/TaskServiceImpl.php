@@ -27,11 +27,11 @@ class TaskServiceImpl implements TaskService
         return $this->repository->index($data['limit']);
     }
 
-    public function store(StoreTaskRequest $taskRequest): Task
+    public function store(StoreTaskRequest $request): Task
     {
-        $taskData = $taskRequest->validated();
-        $taskData['status'] = $taskData['status'] ?? EntityStatus::ACTIVE;
-        return $this->repository->store($taskData);
+        $data = $request->validated();
+        $data['status'] = $data['status'] ?? EntityStatus::ACTIVE;
+        return $this->repository->store($data);
     }
 
     public function show(int $id): ?Task
@@ -42,8 +42,7 @@ class TaskServiceImpl implements TaskService
     public function update(UpdateTaskRequest $request, int $id): Task
     {
         $data = $request->validated();
-        $founded = Task::findOrFail($id);
-        return $this->repository->update($founded, $data);
+        return $this->repository->update($id, $data);
     }
 
     public function destroy(int $id): array

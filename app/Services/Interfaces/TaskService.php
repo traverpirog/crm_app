@@ -14,7 +14,7 @@ interface TaskService
 
     public function show(int $id): ?Task;
 
-    public function store(StoreTaskRequest $taskRequest): Task;
+    public function store(StoreTaskRequest $request): Task;
 
     public function update(UpdateTaskRequest $request, int $id): Task;
 

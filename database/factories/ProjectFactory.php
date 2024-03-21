@@ -3,13 +3,12 @@
 namespace Database\Factories;
 
 use App\Models\EntityStatus;
-use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Task>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
  */
-class TaskFactory extends Factory
+class ProjectFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,10 +18,9 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            "title" => $this->faker->text(20),
+            "name" => $this->faker->url(),
             "description" => $this->faker->text,
-            "status" => $this->faker->randomElement(EntityStatus::cases()),
-            "project_id" => Project::inRandomOrder()->first()
+            "status" => $this->faker->randomElement([EntityStatus::ACTIVE, EntityStatus::FINISH])
         ];
     }
 }

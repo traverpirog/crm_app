@@ -13,7 +13,7 @@ interface TaskRepository
 
     public function show(int $id): Task;
 
-    public function update(Task $founded, array $data): Task;
+    public function update(int $id, array $data): Task;
 
     public function destroy(int $id): bool;
 }
