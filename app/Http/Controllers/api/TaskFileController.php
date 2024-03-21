@@ -11,13 +11,20 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TaskFileController extends Controller
 {
-    public function store(StoreFileRequest $request, FileService $service, int $taskId): AnonymousResourceCollection
+    private FileService $service;
+
+    public function __construct(FileService $service)
     {
-        return FileResource::collection($service->store($request, $taskId));
+        $this->service = $service;
     }
 
-    public function destroy(int $taskId, int $id, FileService $service): JsonResponse
+    public function store(StoreFileRequest $request, int $taskId): AnonymousResourceCollection
     {
-        return response()->json($service->destroy($taskId, $id));
+        return FileResource::collection($this->service->store($request, $taskId));
+    }
+
+    public function destroy(int $taskId, int $id): JsonResponse
+    {
+        return response()->json($this->service->destroy($taskId, $id));
     }
 }

@@ -28,7 +28,6 @@ class IndexTaskResource extends JsonResource
         return [
             "id" => $this->id,
             "title" => $this->title,
-            "description" => $this->description,
             "status" => $this->status,
             "created_at" => $this->created_at
         ];

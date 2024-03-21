@@ -15,8 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(TaskService::class, TaskServiceImpl::class);
-        $this->app->bind(FileService::class, FileServiceImpl::class);
+        $this->app->singleton(TaskService::class, TaskServiceImpl::class);
+        $this->app->singleton(FileService::class, FileServiceImpl::class);
     }
 
     /**

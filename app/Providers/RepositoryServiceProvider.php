@@ -15,14 +15,8 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            TaskRepository::class,
-            TaskRepositoryImpl::class
-        );
-        $this->app->bind(
-            FileRepository::class,
-            FileRepositoryImpl::class
-        );
+        $this->app->singleton(TaskRepository::class, TaskRepositoryImpl::class);
+        $this->app->singleton(FileRepository::class, FileRepositoryImpl::class);
     }
 
     /**

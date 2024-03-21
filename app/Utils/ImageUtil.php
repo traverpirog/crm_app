@@ -9,7 +9,6 @@ class ImageUtil
     public static function upload(array $data, string $entityName = "uploads", $id = ''): array
     {
         $path = "$entityName/$id";
-        $storagePath = "/storage/$path";
         $files = $data['attachment'];
         $loadedFiles = [];
         foreach ($files as $file) {

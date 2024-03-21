@@ -14,43 +14,38 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(IndexTaskRequest $request, TaskService $service): AnonymousResourceCollection
+    private TaskService $service;
+
+    public function __construct(TaskService $service)
     {
-        return IndexTaskResource::collection($service->index($request));
+        $this->service = $service;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTaskRequest $request, TaskService $service): TaskResource
+    public function index(IndexTaskRequest $request): AnonymousResourceCollection
     {
-        $task = $service->store($request);
+        return IndexTaskResource::collection($this->service->index($request));
+    }
+
+    public function store(StoreTaskRequest $request): TaskResource
+    {
+        $task = $this->service->store($request);
         return new TaskResource($task);
     }
 
-    public function show(int $id, TaskService $service): TaskResource
+    public function show(int $id): TaskResource
     {
-        $task = $service->show($id);
+        $task = $this->service->show($id);
         return new TaskResource($task);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTaskRequest $request, int $id, TaskService $service): TaskResource
+    public function update(UpdateTaskRequest $request, int $id): TaskResource
     {
-        $task = $service->update($request, $id);
+        $task = $this->service->update($request, $id);
         return new TaskResource($task);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(int $id, TaskService $service): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        return response()->json($service->destroy($id));
+        return response()->json($this->service->destroy($id));
     }
 }
