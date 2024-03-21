@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\TaskController;
+use App\Http\Controllers\api\TaskFileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource("tasks", TaskController::class);
+Route::resource("tasks.files", TaskFileController::class);
