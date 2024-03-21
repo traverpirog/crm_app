@@ -2,13 +2,14 @@
 
 namespace App\Http\Resources\Project;
 
-use App\Http\Resources\Task\ProjectTaskResource;
 use App\Models\EntityStatus;
+use App\Models\Task;
 use Date;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
+ * @property int $id
  * @property string $name
  * @property string $description
  * @property EntityStatus $status
@@ -24,10 +25,11 @@ class IndexProjectResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            "id" => $this->id,
             "name" => $this->name,
             "description" => $this->description,
             "status" => $this->status,
-            "count" => ProjectTaskResource::collection($this->tasks)->count(),
+            "active_tasks" => Task::where("project_id", $this->id)->where("status", EntityStatus::ACTIVE)->count(),
             "created_at" => $this->created_at
         ];
     }
