@@ -11,19 +11,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string("title")->nullable(false);
-            $table->tinyText("description");
+            $table->string("name");
+            $table->string("description");
             $table->enum("status", [
                 EntityStatus::ACTIVE->value,
-                EntityStatus::PAUSE->value,
                 EntityStatus::FINISH->value
-            ])->default(EntityStatus::ACTIVE);
-            $table->foreignId("project_id")
-                ->references("id")
-                ->on("projects")
-                ->cascadeOnDelete();
+            ]);
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('projects');
     }
 };

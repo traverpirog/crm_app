@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Task;
+namespace App\Http\Requests\Project;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class IndexTaskRequest extends FormRequest
+class UpdateProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,17 +22,7 @@ class IndexTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "limit" => [
-                "integer",
-                Rule::in([8, 16, 24])
-            ]
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            "limit" => "limit must be in [8, 16, 24]"
+            //
         ];
     }
 }
