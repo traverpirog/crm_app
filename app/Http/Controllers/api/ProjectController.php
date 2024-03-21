@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\IndexProjectRequest;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
-use App\Http\Resources\ProjectResource;
+use App\Http\Resources\Project\IndexProjectResource;
+use App\Http\Resources\Project\ProjectResource;
 use App\Services\Interfaces\ProjectService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -23,7 +24,7 @@ class ProjectController extends Controller
 
     public function index(IndexProjectRequest $request): AnonymousResourceCollection
     {
-        return ProjectResource::collection($this->service->index($request));
+        return IndexProjectResource::collection($this->service->index($request));
     }
 
     public function store(StoreProjectRequest $request): ProjectResource
@@ -37,7 +38,7 @@ class ProjectController extends Controller
     }
 
 
-    public function update(UpdateProjectRequest $request, int $id): ProjectResource
+    public function update(int $id, UpdateProjectRequest $request): ProjectResource
     {
         return new ProjectResource($this->service->update($request, $id));
     }

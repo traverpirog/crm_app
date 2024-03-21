@@ -26,7 +26,18 @@ class UpdateTaskRequest extends FormRequest
         return [
             "title" => "string",
             "description" => "string",
+            "project_id" => "int",
             "status" => [Rule::enum(EntityStatus::class)]
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            "status" => "The status must be [" .
+                EntityStatus::ACTIVE->value . ", " .
+                EntityStatus::FINISH->value .
+                "]"
         ];
     }
 }

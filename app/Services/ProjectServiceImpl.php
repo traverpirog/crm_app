@@ -51,6 +51,6 @@ class ProjectServiceImpl implements ProjectService
         if (!$this->repository->destroy($id)) {
             abort(404);
         }
-        return ["message" => "Project with id $id not found"];
+        return ["message" => "Project with id $id deleted"];
     }
 }

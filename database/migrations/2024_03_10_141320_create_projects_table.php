@@ -13,8 +13,8 @@ return new class extends Migration {
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->string("description");
+            $table->string("name")->nullable(false);
+            $table->mediumText("description");
             $table->enum("status", [
                 EntityStatus::ACTIVE->value,
                 EntityStatus::FINISH->value

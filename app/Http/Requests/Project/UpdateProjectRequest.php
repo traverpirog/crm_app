@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Project;
 
+use App\Models\EntityStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateProjectRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,9 @@ class UpdateProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name" => "string",
+            "description" => "string",
+            "status" => [Rule::enum(EntityStatus::class)]
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\EntityStatus;
+use App\Models\Project;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,10 +21,7 @@ return new class extends Migration {
                 EntityStatus::PAUSE->value,
                 EntityStatus::FINISH->value
             ])->default(EntityStatus::ACTIVE);
-            $table->foreignId("project_id")
-                ->references("id")
-                ->on("projects")
-                ->cascadeOnDelete();
+            $table->foreignIdFor(Project::class)->references("id")->on("projects")->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -4,6 +4,9 @@ namespace App\Repositories;
 
 use App\Models\Project;
 use App\Repositories\Interfaces\ProjectRepository;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProjectRepositoryImpl implements ProjectRepository
@@ -19,7 +22,7 @@ class ProjectRepositoryImpl implements ProjectRepository
         return Project::create($data);
     }
 
-    public function show(int $id): Project
+    public function show(int $id): Builder|array|Collection|Model
     {
         return Project::with("tasks")->findOrFail($id);
     }
