@@ -29,7 +29,9 @@ class IndexProjectResource extends JsonResource
             "name" => $this->name,
             "description" => $this->description,
             "status" => $this->status,
-            "active_tasks" => Task::where("project_id", $this->id)->where("status", EntityStatus::ACTIVE)->count(),
+            "active_tasks" => Task::query()
+                ->where("project_id", $this->id)
+                ->where("status", EntityStatus::ACTIVE)->count(),
             "created_at" => $this->created_at
         ];
     }

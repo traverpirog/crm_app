@@ -4,7 +4,7 @@ namespace App\Models;
 
 enum EntityStatus: string
 {
-    case ACTIVE = "Активен";
-    case PAUSE = "В паузе";
-    case FINISH = "Завершен";
+    case ACTIVE = "ACTIVE";
+    case PAUSE = "PAUSE";
+    case FINISH = "FINISH";
 }
