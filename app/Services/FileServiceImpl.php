@@ -3,28 +3,34 @@
 namespace App\Services;
 
 use App\Http\Requests\File\StoreFileRequest;
+use App\Models\File;
+use App\Models\Task;
 use App\Repositories\Interfaces\FileRepository;
 use App\Services\Interfaces\FileService;
 use App\Utils\ImageUtil;
 
 class FileServiceImpl implements FileService
 {
-    private FileRepository $repository;
-
-    public function __construct(FileRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     public function store(StoreFileRequest $request, int $taskId): array
     {
         $data = ImageUtil::upload($request->validated(), "tasks", $taskId);
-        return $this->repository->store($data, $taskId);
+        $task = Task::findOrFail($taskId);
+        foreach ($data as $item) {
+            $file = File::create($item);
+            $task->files()->attach($file);
+        }
+        return $data;
     }
 
     public function destroy(int $taskId, int $id): array
     {
-        $path = $this->repository->destroy($taskId, $id);
+        $task = Task::findOrFail($taskId);
+        $file = $task->files()->find($id);
+        $path = "";
+        if (!is_null($file)) {
+            $path = $file->path;
+            $file->delete();
+        }
         if (!ImageUtil::delete($path)) {
             abort(404);
         }
