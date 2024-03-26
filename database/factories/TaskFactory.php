@@ -22,7 +22,7 @@ class TaskFactory extends Factory
             "title" => $this->faker->text(20),
             "description" => $this->faker->text,
             "status" => $this->faker->randomElement(EntityStatus::cases()),
-            "project_id" => Project::inRandomOrder()->first()
+            "project_id" => Project::query()->inRandomOrder()->first()
         ];
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\PersonalAccessTokenController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\TaskFileController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +19,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['ability:role-admin,role-user'])->group(function () {
+        Route::get("/tasks", [TaskController::class, 'index']);
+        Route::get("/tasks/{id}", [TaskController::class, 'show']);
+        Route::get("/projects", [ProjectController::class, 'index']);
+        Route::get("/projects/{id}", [ProjectController::class, 'show']);
+    });
+    Route::middleware('ability:role-admin')->group(function () {
+        Route::prefix("tasks")->controller(TaskController::class)->group(function () {
+            Route::post("/", 'store');
+            Route::put("/{id}", 'update');
+            Route::delete("/{id}", 'destroy');
+        });
+        Route::resource("tasks.files", TaskFileController::class);
+        Route::resource("projects", ProjectController::class);
+    });
 });
 
-Route::resource("tasks", TaskController::class);
-Route::resource("tasks.files", TaskFileController::class);
-Route::resource("projects", ProjectController::class);
+
+Route::post("/personal-access-tokens", [PersonalAccessTokenController::class, 'store']);

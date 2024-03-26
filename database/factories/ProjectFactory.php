@@ -20,7 +20,7 @@ class ProjectFactory extends Factory
         return [
             "name" => $this->faker->url(),
             "description" => $this->faker->text,
-            "status" => $this->faker->randomElement([EntityStatus::ACTIVE, EntityStatus::FINISH])
+            "status" => $this->faker->randomElement([EntityStatus::ACTIVE->name, EntityStatus::FINISH->name])
         ];
     }
 }

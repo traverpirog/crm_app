@@ -7,7 +7,6 @@ use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Models\EntityStatus;
 use App\Models\Project;
-use App\Repositories\Interfaces\ProjectRepository;
 use App\Services\Interfaces\ProjectService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;

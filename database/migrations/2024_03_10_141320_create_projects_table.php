@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->enum("status", [
                 EntityStatus::ACTIVE->value,
                 EntityStatus::FINISH->value
-            ]);
+            ])->default(EntityStatus::ACTIVE);
             $table->timestamps();
         });
     }

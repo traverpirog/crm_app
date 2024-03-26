@@ -26,6 +26,14 @@ class IndexTaskRequest extends FormRequest
             "limit" => [
                 "integer",
                 Rule::in([8, 16, 24])
+            ],
+            "order_by" => [
+                "string",
+                Rule::in("created_at")
+            ],
+            "order_dir" => [
+                "string",
+                Rule::in(["asc", "desc"])
             ]
         ];
     }
