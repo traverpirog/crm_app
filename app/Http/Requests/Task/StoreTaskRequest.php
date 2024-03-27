@@ -27,6 +27,7 @@ class StoreTaskRequest extends FormRequest
             "title" => "required|string",
             "description" => "nullable|string",
             "project_id" => "int|required",
+            "users_id" => "array",
             "status" => [Rule::enum(EntityStatus::class)]
         ];
     }

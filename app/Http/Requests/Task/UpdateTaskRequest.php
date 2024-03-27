@@ -27,7 +27,8 @@ class UpdateTaskRequest extends FormRequest
             "title" => "string",
             "description" => "string",
             "project_id" => "int",
-            "status" => [Rule::enum(EntityStatus::class)]
+            "status" => [Rule::enum(EntityStatus::class)],
+            "users_id" => "array"
         ];
     }
 

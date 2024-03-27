@@ -10,11 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\DB;
 
-/**
- * @method static paginate(int $int)
- * @method static create(mixed $data)
- * @method static where(mixed $param, mixed $value)
- */
 class Task extends Model
 {
     use HasFactory;
@@ -24,7 +19,8 @@ class Task extends Model
         "title",
         "description",
         "status",
-        "project_id"
+        "project_id",
+        "user_id"
     ];
 
     public function files(): MorphToMany

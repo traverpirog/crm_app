@@ -20,6 +20,7 @@ class TaskFileController extends Controller
 
     public function store(StoreFileRequest $request, int $taskId): AnonymousResourceCollection
     {
+        // TODO: Fix response for store files
         return FileResource::collection($this->service->store($request, $taskId));
     }
 

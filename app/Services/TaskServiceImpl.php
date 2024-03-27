@@ -9,8 +9,11 @@ use App\Models\EntityStatus;
 use App\Models\Roles;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\UserTask;
 use App\Services\Interfaces\TaskService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorAlias;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use LaravelIdea\Helper\App\Models\_IH_Task_C;
 
@@ -31,23 +34,27 @@ class TaskServiceImpl implements TaskService
             ->withQueryString();
     }
 
-    public function store(StoreTaskRequest $request): Task
+    public function store(StoreTaskRequest $request, User $user): Task
     {
         $data = $request->validated();
-        $data['status'] = $data['status'] ?? EntityStatus::ACTIVE;
-        return Task::create($data);
+        $data["status"] = $data["status"] ?? EntityStatus::ACTIVE;
+        $data["user_id"] = $user->id;
+        $task = Task::query()->create($data);
+        $this->updateOrCreateRelations($task->id, $data["users_id"] ?? []);
+        return $task;
     }
 
     public function show(int $id): ?Task
     {
-        return Task::with('files')->findOrFail($id);
+        return Task::query()->findOrFail($id);
     }
 
     public function update(UpdateTaskRequest $request, int $id): Task
     {
         $data = $request->validated();
-        $founded = Task::findOrFail($id);
+        $founded = Task::query()->findOrFail($id);
         $founded->update($data);
+        $this->updateOrCreateRelations($id, $data["users_id"] ?? []);
         return $founded;
     }
 
@@ -64,5 +71,15 @@ class TaskServiceImpl implements TaskService
         return Task::query()
             ->orderBy($data["order_by"], $data["order_dir"])
             ->paginate($data["limit"])->withQueryString();
+    }
+
+    private function updateOrCreateRelations(int $task_id, $users_id): void
+    {
+        foreach ($users_id as $user_id) {
+            UserTask::query()->updateOrCreate([
+                "user_id" => $user_id,
+                "task_id" => $task_id
+            ]);
+        }
     }
 }

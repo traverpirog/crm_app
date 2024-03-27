@@ -3,8 +3,10 @@
 namespace App\Http\Resources\Task;
 
 use App\Http\Resources\FileResource;
+use App\Http\Resources\User\IndexUserTaskResource;
 use App\Models\EntityStatus;
 use App\Models\Project;
+use App\Models\User;
 use Date;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,6 +20,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property array $files
  * @property array $comments
  * @property Project $project
+ * @property array $users
+ * @property int $creator_id
  */
 class TaskResource extends JsonResource
 {
@@ -35,6 +39,8 @@ class TaskResource extends JsonResource
             "project" => $this->project,
             "status" => $this->status,
             "files" => FileResource::collection($this->files),
+            "creator" => $this->creator_id,
+            "users" => IndexUserTaskResource::collection($this->users),
             "comments" => $this->comments,
             "created_at" => $this->created_at
         ];

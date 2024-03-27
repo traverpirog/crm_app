@@ -31,7 +31,7 @@ class TaskController extends Controller
 
     public function store(StoreTaskRequest $request): TaskResource
     {
-        $task = $this->service->store($request);
+        $task = $this->service->store($request, auth()->user());
         return new TaskResource($task);
     }
 

@@ -2,8 +2,11 @@
 
 namespace App\Http\Resources\Task;
 
+use App\Http\Resources\Project\IndexProjectTaskResource;
+use App\Http\Resources\User\IndexUserTaskResource;
 use App\Models\EntityStatus;
 use App\Models\Project;
+use App\Models\User;
 use Date;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -17,6 +20,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property array $files
  * @property array $comments
  * @property Project $project
+ * @property int $creator_id
  */
 class IndexTaskResource extends JsonResource
 {
@@ -31,7 +35,8 @@ class IndexTaskResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "status" => $this->status,
-            "project" => $this->project,
+            "project" => new IndexProjectTaskResource($this->project),
+            "creator" => new IndexUserTaskResource(User::query()->find($this->creator_id)),
             "created_at" => $this->created_at
         ];
     }
