@@ -4,7 +4,6 @@ use App\Http\Controllers\Api\PersonalAccessTokenController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\TaskFileController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,7 +31,11 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::delete("/{id}", 'destroy');
         });
         Route::resource("tasks.files", TaskFileController::class);
-        Route::resource("projects", ProjectController::class);
+        Route::prefix('projects')->controller(ProjectController::class)->group(function () {
+            Route::post("/", 'store');
+            Route::put("/{id}", 'update');
+            Route::delete("/{id}", 'destroy');
+        });
     });
 });
 
