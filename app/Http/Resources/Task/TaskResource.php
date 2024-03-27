@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources\Task;
 
-use App\Http\Resources\FileResource;
+use App\Http\Resources\File\FileResource;
 use App\Http\Resources\User\IndexUserTaskResource;
 use App\Models\EntityStatus;
 use App\Models\Project;
-use App\Models\User;
 use Date;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
