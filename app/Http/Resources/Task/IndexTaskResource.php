@@ -3,7 +3,7 @@
 namespace App\Http\Resources\Task;
 
 use App\Http\Resources\Project\IndexProjectTaskResource;
-use App\Http\Resources\User\IndexUserTaskResource;
+use App\Http\Resources\User\IndexUserResource;
 use App\Models\EntityStatus;
 use App\Models\Project;
 use App\Models\User;
@@ -36,7 +36,7 @@ class IndexTaskResource extends JsonResource
             "title" => $this->title,
             "status" => $this->status,
             "project" => new IndexProjectTaskResource($this->project),
-            "creator" => new IndexUserTaskResource(User::query()->find($this->creator_id)),
+            "creator" => new IndexUserResource(User::query()->find($this->creator_id)),
             "created_at" => $this->created_at
         ];
     }

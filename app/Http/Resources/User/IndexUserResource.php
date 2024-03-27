@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property string $name
  * @property Roles $role
  */
-class IndexUserTaskResource extends JsonResource
+class IndexUserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

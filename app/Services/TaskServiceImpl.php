@@ -11,10 +11,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\UserTask;
 use App\Services\Interfaces\TaskService;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorAlias;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use LaravelIdea\Helper\App\Models\_IH_Task_C;
 
 class TaskServiceImpl implements TaskService

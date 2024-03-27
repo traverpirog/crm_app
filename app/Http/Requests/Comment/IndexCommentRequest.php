@@ -3,15 +3,16 @@
 namespace App\Http\Requests\Comment;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreCommentRequest extends FormRequest
+class IndexCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,7 +23,10 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "comment" => "required|string"
+            "limit" => [
+                "integer",
+                Rule::in([8, 16, 24])
+            ]
         ];
     }
 }

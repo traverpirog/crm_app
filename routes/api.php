@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PersonalAccessTokenController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\TaskController;
@@ -19,8 +20,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::middleware(['ability:role-admin,role-user'])->group(function () {
-        Route::get("/tasks", [TaskController::class, 'index']);
-        Route::get("/tasks/{id}", [TaskController::class, 'show']);
+        Route::prefix("tasks")->group(function () {
+            Route::get("/", [TaskController::class, 'index']);
+            Route::get("/{id}", [TaskController::class, 'show']);
+            Route::post("/{id}/comments", [CommentController::class, 'store']);
+            Route::put("/{id}/comments/{comment_id}", [CommentController::class, 'update']);
+            Route::delete("/{id}/comments/{comment_id}", [CommentController::class, 'destroy']);
+        });
         Route::get("/projects", [ProjectController::class, 'index']);
         Route::get("/projects/{id}", [ProjectController::class, 'show']);
     });
@@ -38,6 +44,5 @@ Route::middleware('auth:sanctum')->group(function () {
         });
     });
 });
-
 
 Route::post("/personal-access-tokens", [PersonalAccessTokenController::class, 'store']);

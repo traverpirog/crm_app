@@ -3,7 +3,7 @@
 namespace App\Http\Resources\Task;
 
 use App\Http\Resources\File\FileResource;
-use App\Http\Resources\User\IndexUserTaskResource;
+use App\Http\Resources\User\IndexUserResource;
 use App\Models\EntityStatus;
 use App\Models\Project;
 use Date;
@@ -39,7 +39,7 @@ class TaskResource extends JsonResource
             "status" => $this->status,
             "files" => FileResource::collection($this->files),
             "creator" => $this->creator_id,
-            "users" => IndexUserTaskResource::collection($this->users),
+            "users" => IndexUserResource::collection($this->users),
             "comments" => $this->comments,
             "created_at" => $this->created_at
         ];

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Task::class);
+            $table->foreignIdFor(User::class)->constrained("users")->cascadeOnDelete();
+            $table->foreignIdFor(Task::class)->constrained("tasks")->cascadeOnDelete();
             $table->tinyText("comment");
             $table->timestamps();
         });
