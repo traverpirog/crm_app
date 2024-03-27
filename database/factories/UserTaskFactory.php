@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Task;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,9 +17,10 @@ class UserTaskFactory extends Factory
      */
     public function definition(): array
     {
+        $task = Task::factory()->create();
         return [
-            "user_id" => User::query()->inRandomOrder()->first(),
-            "task_id" => Task::query()->inRandomOrder()->first(),
+            "user_id" => 1,
+            "task_id" => $task->id,
         ];
     }
 }
