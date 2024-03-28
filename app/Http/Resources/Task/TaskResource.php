@@ -6,9 +6,11 @@ use App\Http\Resources\File\FileResource;
 use App\Http\Resources\User\IndexUserResource;
 use App\Models\EntityStatus;
 use App\Models\Project;
+use App\Models\Task;
 use Date;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * @property int $id
@@ -17,10 +19,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property EntityStatus $status
  * @property Date $created_at
  * @property array $files
- * @property array $comments
  * @property Project $project
  * @property array $users
  * @property int $creator_id
+ * @property mixed $commentsPaginate
  */
 class TaskResource extends JsonResource
 {
@@ -40,7 +42,7 @@ class TaskResource extends JsonResource
             "files" => FileResource::collection($this->files),
             "creator" => $this->creator_id,
             "users" => IndexUserResource::collection($this->users),
-            "comments" => $this->comments,
+            "comments" => Task::query()->findOrFail($this->id)->comments()->paginate(),
             "created_at" => $this->created_at
         ];
     }
