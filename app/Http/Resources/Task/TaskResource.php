@@ -4,6 +4,7 @@ namespace App\Http\Resources\Task;
 
 use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\File\FileResource;
+use App\Http\Resources\Project\IndexProjectTaskResource;
 use App\Http\Resources\User\IndexUserResource;
 use App\Models\EntityStatus;
 use App\Models\Project;
@@ -38,7 +39,7 @@ class TaskResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "description" => $this->description,
-            "project" => $this->project,
+            "project" => new IndexProjectTaskResource($this->project),
             "status" => $this->status,
             "files" => FileResource::collection($this->files),
             "creator" => $this->creator_id,
