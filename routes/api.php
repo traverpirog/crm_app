@@ -22,10 +22,16 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::middleware(["ability:role-admin,role-user"])->group(function () {
         Route::prefix("tasks")->group(function () {
             Route::get("/", [TaskController::class, "index"]);
-            Route::get("/{task}", [TaskController::class, "show"]);
-            Route::post("/{task}/comments", [CommentController::class, "store"]);
-            Route::put("/{task}/comments/{comment}", [CommentController::class, "update"]);
-            Route::delete("/{task}/comments/{comment}", [CommentController::class, "destroy"]);
+            Route::prefix("{task}")->group(function () {
+                Route::get("/", [TaskController::class, "show"]);
+                Route::prefix("comments")->controller(CommentController::class)->group(function () {
+                    Route::post("/", "store");
+                    Route::put("/{comment}", "update");
+                    Route::delete("/{comment}", "destroy");
+                    Route::post("/{comment}/files", "storeFile");
+                    Route::delete("/{comment}/files/{file}", "destroyFile");
+                });
+            });
         });
         Route::get("/projects", [ProjectController::class, "index"]);
         Route::get("/projects/{project}", [ProjectController::class, "show"]);
@@ -34,11 +40,13 @@ Route::middleware("auth:sanctum")->group(function () {
         Route::prefix("tasks")->group(function () {
             Route::controller(TaskController::class)->group(function () {
                 Route::post("/", "store");
-                Route::put("/{task}", "update");
-                Route::delete("/{task}", "destroy");
+                Route::prefix("{task}")->group(function () {
+                    Route::put("/", "update");
+                    Route::delete("/", "destroy");
+                    Route::post("/files", "storeFile");
+                    Route::delete("/files/{file}", "destroyFile");
+                });
             });
-            Route::post("/{task}/files", [TaskFileController::class, "store"]);
-            Route::delete("/{task}/files/{file}", [TaskFileController::class, "destroy"]);
         });
         Route::prefix("projects")->controller(ProjectController::class)->group(function () {
             Route::post("/", "store");

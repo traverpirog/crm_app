@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @property array $attachment
  */
-class StoreTaskFileResource extends JsonResource
+class StoreFileResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

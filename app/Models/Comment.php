@@ -8,10 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * @method static paginate(int $int)
- * @method static create(mixed $data)
- * @method static find(int $id)
- * @method static findOrFail(int $id)
+ * @property int $id
  */
 class Comment extends Model
 {

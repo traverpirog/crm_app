@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * @method static create(array $data)
+ * @property int $id
  */
 class File extends Model
 {

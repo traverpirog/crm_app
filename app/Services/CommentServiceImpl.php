@@ -15,30 +15,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class CommentServiceImpl implements CommentService
 {
-    public function store(StoreCommentRequest $request, int $task_id): Comment
+    public function store(StoreCommentRequest $request, Task $task): Comment
     {
         $data = $request->validated();
-        $data["task_id"] = $task_id;
+        $data["task_id"] = $task->id;
         $data["user_id"] = auth()->user()->id;
-        return Task::query()->findOrFail($task_id)->comments()->create($data);
+        return Task::query()->findOrFail($task->id)->comments()->create($data);
     }
 
-    public function update(UpdateCommentRequest $request, int $task_id, int $comment_id): Builder|array|Collection|Model
+    public function update(UpdateCommentRequest $request, Comment $comment): Builder|array|Collection|Model
     {
         $data = $request->validated();
-        $task = Task::query()->findOrFail($task_id);
-        $comment = $task->comments()->findOrFail($comment_id);
         $comment->update($data);
         return $comment;
     }
 
-    public function destroy(int $task_id, int $comment_id): array
+    public function destroy(Comment $comment): array
     {
-        $task = Task::query()->findOrFail($task_id);
-        $isDeleted = $task->comments()->delete($comment_id);
+        $isDeleted = $comment->delete();
         if (!$isDeleted) {
             abort(404);
         }
-        return ["message" => "Comment with id $comment_id deleted"];
+        return ["message" => "Comment with id $comment->id deleted"];
     }
 }

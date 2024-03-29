@@ -3,8 +3,6 @@
 namespace App\Services\Interfaces;
 
 use App\Http\Requests\File\StoreFileRequest;
-use Illuminate\Database\Eloquent\Model;
-use PhpParser\Builder\Class_;
 
 interface FileService
 {
