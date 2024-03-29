@@ -2,11 +2,9 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CommentController;
-use App\Http\Controllers\Api\PersonalAccessTokenController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\TaskFileController;
-use App\Http\Middleware\CheckAccessForUser;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,35 +18,38 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::middleware(['ability:role-admin,role-user'])->group(function () {
+Route::middleware("auth:sanctum")->group(function () {
+    Route::middleware(["ability:role-admin,role-user"])->group(function () {
         Route::prefix("tasks")->group(function () {
-            Route::get("/", [TaskController::class, 'index']);
-            Route::get("/{id}", [TaskController::class, 'show']);
-            Route::post("/{id}/comments", [CommentController::class, 'store']);
-            Route::put("/{id}/comments/{comment_id}", [CommentController::class, 'update']);
-            Route::delete("/{id}/comments/{comment_id}", [CommentController::class, 'destroy']);
+            Route::get("/", [TaskController::class, "index"]);
+            Route::get("/{task}", [TaskController::class, "show"]);
+            Route::post("/{task}/comments", [CommentController::class, "store"]);
+            Route::put("/{task}/comments/{comment}", [CommentController::class, "update"]);
+            Route::delete("/{task}/comments/{comment}", [CommentController::class, "destroy"]);
         });
-        Route::get("/projects", [ProjectController::class, 'index']);
-        Route::get("/projects/{id}", [ProjectController::class, 'show']);
+        Route::get("/projects", [ProjectController::class, "index"]);
+        Route::get("/projects/{project}", [ProjectController::class, "show"]);
     });
-    Route::middleware('ability:role-admin')->group(function () {
-        Route::prefix("tasks")->controller(TaskController::class)->group(function () {
-            Route::post("/", 'store');
-            Route::put("/{id}", 'update');
-            Route::delete("/{id}", 'destroy');
+    Route::middleware("ability:role-admin")->group(function () {
+        Route::prefix("tasks")->group(function () {
+            Route::controller(TaskController::class)->group(function () {
+                Route::post("/", "store");
+                Route::put("/{task}", "update");
+                Route::delete("/{task}", "destroy");
+            });
+            Route::post("/{task}/files", [TaskFileController::class, "store"]);
+            Route::delete("/{task}/files/{file}", [TaskFileController::class, "destroy"]);
         });
-        Route::resource("tasks.files", TaskFileController::class);
-        Route::prefix('projects')->controller(ProjectController::class)->group(function () {
-            Route::post("/", 'store');
-            Route::put("/{id}", 'update');
-            Route::delete("/{id}", 'destroy');
+        Route::prefix("projects")->controller(ProjectController::class)->group(function () {
+            Route::post("/", "store");
+            Route::put("/{project}", "update");
+            Route::delete("/{project}", "destroy");
         });
     });
 });
 
 Route::controller(AuthController::class)->group(function () {
-    Route::post("/login", 'login');
-    Route::post("/register", 'register');
-    Route::post("/logout", 'logout')->middleware(["auth:sanctum"]);
+    Route::post("/login", "login");
+    Route::post("/register", "register");
+    Route::post("/logout", "logout")->middleware(["auth:sanctum"]);
 });
