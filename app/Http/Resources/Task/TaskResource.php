@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Task;
 
+use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\File\FileResource;
 use App\Http\Resources\User\IndexUserResource;
 use App\Models\EntityStatus;
@@ -22,7 +23,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * @property Project $project
  * @property array $users
  * @property int $creator_id
- * @property mixed $commentsPaginate
+ * @property array $comments
  */
 class TaskResource extends JsonResource
 {
@@ -42,7 +43,7 @@ class TaskResource extends JsonResource
             "files" => FileResource::collection($this->files),
             "creator" => $this->creator_id,
             "users" => IndexUserResource::collection($this->users),
-            "comments" => Task::query()->findOrFail($this->id)->comments()->paginate(),
+            "comments" => CommentResource::collection($this->comments),
             "created_at" => $this->created_at
         ];
     }
