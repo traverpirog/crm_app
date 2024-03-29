@@ -9,6 +9,7 @@ use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Http\Resources\Task\IndexTaskResource;
 use App\Http\Resources\Task\TaskResource;
 use App\Models\Roles;
+use App\Models\Task;
 use App\Models\User;
 use App\Services\Interfaces\TaskService;
 use Gate;
@@ -35,21 +36,20 @@ class TaskController extends Controller
         return new TaskResource($task);
     }
 
-    public function show(int $id): TaskResource
+    public function show(Task $task): TaskResource
     {
-        $task = $this->service->show($id);
         Gate::allowIf(fn(User $user) => $user->role === Roles::ADMIN->value || $task->users()->findOrFail($user->id));
         return new TaskResource($task);
     }
 
-    public function update(UpdateTaskRequest $request, int $id): TaskResource
+    public function update(UpdateTaskRequest $request, Task $task): TaskResource
     {
-        $task = $this->service->update($request, $id);
+        $task = $this->service->update($request, $task);
         return new TaskResource($task);
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(Task $task): JsonResponse
     {
-        return response()->json($this->service->destroy($id));
+        return response()->json($this->service->destroy($task));
     }
 }

@@ -13,11 +13,9 @@ interface TaskService
 {
     public function index(IndexTaskRequest $request, User $user): LengthAwarePaginator;
 
-    public function show(int $id): ?Task;
-
     public function store(StoreTaskRequest $request, User $user): Task;
 
-    public function update(UpdateTaskRequest $request, int $id): Task;
+    public function update(UpdateTaskRequest $request, Task $task): Task;
 
-    public function destroy(int $id): array;
+    public function destroy(Task $task): array;
 }

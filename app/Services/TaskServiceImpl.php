@@ -41,29 +41,23 @@ class TaskServiceImpl implements TaskService
         return $task;
     }
 
-    public function show(int $id): ?Task
-    {
-        return Task::query()->findOrFail($id);
-    }
-
-    public function update(UpdateTaskRequest $request, int $id): Task
+    public function update(UpdateTaskRequest $request, Task $task): Task
     {
         $data = $request->validated();
-        $founded = Task::query()->findOrFail($id);
-        $founded->update($data);
-        $this->updateOrCreateRelations($id, $data["users_id"] ?? []);
-        return $founded;
+        $task->update($data);
+        $this->updateOrCreateRelations($task->id, $data["users_id"] ?? []);
+        return $task;
     }
 
-    public function destroy(int $id): array
+    public function destroy(Task $task): array
     {
-        if (!Task::destroy($id)) {
+        if (!Task::destroy($task->id)) {
             abort(404);
         }
-        return ["message" => "Task with id $id deleted"];
+        return ["message" => "Task has been deleted"];
     }
 
-    private function getAll(array $data): LengthAwarePaginatorAlias|array|LengthAwarePaginator|_IH_Task_C
+    private function getAll(array $data): array|LengthAwarePaginator|_IH_Task_C
     {
         return Task::query()
             ->orderBy($data["order_by"], $data["order_dir"])

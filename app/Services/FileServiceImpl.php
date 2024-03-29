@@ -7,32 +7,44 @@ use App\Models\File;
 use App\Models\Task;
 use App\Services\Interfaces\FileService;
 use App\Utils\ImageUtil;
+use DB;
+use Illuminate\Database\Eloquent\Model;
 
 class FileServiceImpl implements FileService
 {
-    public function store(StoreFileRequest $request, int $taskId): array
+    public function store(StoreFileRequest $request, int $entityId, string $className): array
     {
-        $data = ImageUtil::upload($request->validated(), "tasks", $taskId);
-        $task = Task::findOrFail($taskId);
+        $entity = $this->getEntity($entityId, $className);
+        $data = ImageUtil::upload($request->validated(), $entity->getTable(), $entityId);
         foreach ($data as $item) {
             $file = File::create($item);
-            $task->files()->attach($file);
+            $entity->files()->attach($file);
         }
         return $data;
     }
 
-    public function destroy(int $taskId, int $id): array
+    public function destroy(int $entityId, int $id, string $className): array
     {
-        $task = Task::findOrFail($taskId);
-        $file = $task->files()->find($id);
+        $entity = $this->getEntity($entityId, $className);
+        $file = $entity->files()->find($id);
         $path = "";
         if (!is_null($file)) {
             $path = $file->path;
+            DB::delete("delete from filables where file_id = ? and filable_type = ?", [$file->id, $className]);
             $file->delete();
         }
         if (!ImageUtil::delete($path)) {
             abort(404);
         }
         return ["message" => "File with id $id deleted"];
+    }
+
+    private function getEntity(int $entityId, string $className): Model
+    {
+        $entity = new $className;
+        if (!($entity instanceof Model)) {
+            abort(500, "Use correct entity. It should be extended from Model");
+        }
+        return $entity->newQuery()->findOrFail($entityId);
     }
 }
