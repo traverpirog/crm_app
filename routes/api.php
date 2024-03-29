@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PersonalAccessTokenController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\TaskFileController;
+use App\Http\Middleware\CheckAccessForUser;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,4 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-Route::post("/personal-access-tokens", [PersonalAccessTokenController::class, 'store']);
+Route::controller(AuthController::class)->group(function () {
+    Route::post("/login", 'login');
+    Route::post("/register", 'register');
+});

@@ -28,6 +28,11 @@ class Comment extends Model
         return $this->belongsTo(Task::class);
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function files(): MorphToMany
     {
         return $this->morphToMany(File::class, "filable");

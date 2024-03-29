@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Comment\IndexCommentRequest;
 use App\Http\Requests\Comment\StoreCommentRequest;
 use App\Http\Requests\Comment\UpdateCommentRequest;
 use App\Http\Resources\Comment\CommentResource;
-use App\Models\Comment;
 use App\Services\Interfaces\CommentService;
+use Gate;
+use Illuminate\Foundation\Auth\User;
 
 class CommentController extends Controller
 {
@@ -24,13 +24,15 @@ class CommentController extends Controller
         return new CommentResource($this->service->store($request, $task_id));
     }
 
-    public function update(UpdateCommentRequest $request, int $id)
+    public function update(UpdateCommentRequest $request, int $task_id, int $comment_id)
     {
-        //
+        $user = auth()->user();
+        Gate::allowIf(fn() => !empty($user->comments()->findOrFail($comment_id)));
+        return new CommentResource($this->service->update($request, $task_id, $comment_id));
     }
 
-    public function destroy(int $id)
+    public function destroy(int $task_id, int $comment_id)
     {
-        //
+        return response()->json($this->service->destroy($task_id, $comment_id));
     }
 }

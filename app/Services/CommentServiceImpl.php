@@ -9,6 +9,9 @@ use App\Models\Comment;
 use App\Models\Task;
 use App\Services\Interfaces\CommentService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class CommentServiceImpl implements CommentService
 {
@@ -20,13 +23,22 @@ class CommentServiceImpl implements CommentService
         return Task::query()->findOrFail($task_id)->comments()->create($data);
     }
 
-    public function update(UpdateCommentRequest $request, int $task_id, int $comment_id)
+    public function update(UpdateCommentRequest $request, int $task_id, int $comment_id): Builder|array|Collection|Model
     {
-        // TODO: Implement update() method.
+        $data = $request->validated();
+        $task = Task::query()->findOrFail($task_id);
+        $comment = $task->comments()->findOrFail($comment_id);
+        $comment->update($data);
+        return $comment;
     }
 
-    public function destroy(int $task_id, int $comment_id)
+    public function destroy(int $task_id, int $comment_id): array
     {
-        // TODO: Implement destroy() method.
+        $task = Task::query()->findOrFail($task_id);
+        $isDeleted = $task->comments()->delete($comment_id);
+        if (!$isDeleted) {
+            abort(404);
+        }
+        return ["message" => "Comment with id $comment_id deleted"];
     }
 }
