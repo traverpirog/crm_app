@@ -20,7 +20,7 @@ class Task extends Model
         "description",
         "status",
         "project_id",
-        "user_id"
+        "creator_id"
     ];
 
     public function files(): MorphToMany

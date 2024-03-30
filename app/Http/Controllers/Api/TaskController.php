@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\TaskEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\File\StoreFileRequest;
 use App\Http\Requests\Task\IndexTaskRequest;
@@ -16,6 +17,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Services\Interfaces\FileService;
 use App\Services\Interfaces\TaskService;
+use App\Utils\Messages;
 use Gate;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -37,6 +39,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request): TaskResource
     {
         $task = $this->taskService->store($request, auth()->user());
+        TaskEvent::dispatch($task, Messages::TASK_SUBJ_STORE->value);
         return new TaskResource($task);
     }
 
@@ -59,11 +62,13 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task): TaskResource
     {
         $task = $this->taskService->update($request, $task);
+        TaskEvent::dispatch($task, Messages::TASK_SUBJ_UPDATE->value);
         return new TaskResource($task);
     }
 
     public function destroy(Task $task): JsonResponse
     {
-        return response()->json($this->taskService->destroy($task));
+        $message = $this->taskService->destroy($task);
+        return response()->json($message);
     }
 }

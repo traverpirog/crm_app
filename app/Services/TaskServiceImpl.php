@@ -35,7 +35,7 @@ class TaskServiceImpl implements TaskService
     {
         $data = $request->validated();
         $data["status"] = $data["status"] ?? EntityStatus::ACTIVE;
-        $data["user_id"] = $user->id;
+        $data["creator_id"] = $user->id;
         $task = Task::query()->create($data);
         $this->updateOrCreateRelations($task->id, $data["users_id"] ?? []);
         return $task;
